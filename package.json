@@ -1,0 +1,64 @@
+{
+  "name": "today-tree",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./core": {
+      "import": "./dist/core.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "module": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "b": "rm -rf dist && tsc ",
+    "build:storybook": "storybook build",
+    "check": "biome check --write",
+    "dev": "rslib build --watch",
+    "format": "biome format --write",
+    "storybook": "storybook dev",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.3",
+    "@rsbuild/core": "~1.1.2",
+    "@rsbuild/plugin-react": "^1.0.7",
+    "@rslib/core": "^0.0.16",
+    "@storybook/addon-essentials": "^8.3.6",
+    "@storybook/addon-interactions": "^8.3.6",
+    "@storybook/addon-links": "^8.3.6",
+    "@storybook/addon-onboarding": "^8.3.6",
+    "@storybook/blocks": "^8.3.6",
+    "@storybook/react": "^8.3.6",
+    "@storybook/test": "^8.3.6",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.1",
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-window": "^1.8.8",
+    "jsdom": "^25.0.1",
+    "react": "^18.3.1",
+    "react-window": "^1.8.10",
+    "storybook": "^8.3.6",
+    "storybook-addon-rslib": "^0.1.3",
+    "storybook-react-rsbuild": "^0.1.3",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
+  },
+  "private": true,
+  "dependencies": {
+    "notificar": "^1.0.1",
+    "p-series": "^3.0.0",
+    "path-fx": "^2.1.2"
+  }
+}
