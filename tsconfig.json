@@ -1,22 +1,8 @@
 {
-  "compilerOptions": {
-    "lib": ["DOM", "ES2022"],
-    "module": "ESNext",
-    "jsx": "react",
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "declaration": true,
-		"declarationDir": "./dist/typings",
-		"sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": false,
-    "noImplicitAny": false,
-    "noImplicitReturns": true, 
-    "skipLibCheck": true,
-    "isolatedModules": false,
-    "resolveJsonModule": true,
-    "target": "ESNext",
-    "moduleResolution": "bundler",
-  },
-  "include": ["src"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.lib.json" }
+  ]
 }

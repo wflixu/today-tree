@@ -1,0 +1,28 @@
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #424242;
+}
+
+.file-tree {
+  font-family: "Segoe UI";
+  font-size: 15px;
+  color: #c1c1c1;
+  background-color: #1f1f1f;
+  display: inline-block;
+}
+.file-tree, .file-tree * {
+  box-sizing: border-box;
+}
+

@@ -1,7 +1,7 @@
-import { Disposable, DisposablesComposite, IDisposable, Notificar } from 'notificar'
 import React, { createRef } from 'react'
-import { Align, FixedSizeList } from '../window'
+import { Disposable, DisposablesComposite, IDisposable, Notificar } from 'notificar'
 
+import { Align, FixedSizeList } from '../window'
 import { Directory, FileEntry, FileType, Root } from '../core'
 import { TreeModel } from '../models/index'
 import { NewFilePromptHandle, PromptHandle, RenamePromptHandle } from '../models/prompt'

@@ -208,6 +208,7 @@ export type IWatcherEvent =
   | IWatcherRemoveEvent
   | IWatcherMoveEvent;
 
+
 export enum WatchEvent {
   Added = 1,
 

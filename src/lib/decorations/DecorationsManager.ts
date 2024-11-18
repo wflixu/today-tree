@@ -1,4 +1,5 @@
 import { Directory, FileEntry, FileType, Root } from '../core'
+
 import { DisposablesComposite, IDisposable } from 'notificar'
 import { Decoration } from './Decoration'
 import { type ClasslistComposite, DecorationComposite, DecorationCompositeType } from './DecorationComposite'
@@ -132,9 +133,7 @@ export class DecorationsManager implements IDisposable {
      * Resolution includes taking inheritances into consideration, along with any negations that may void some or all of inheritances
      */
     public getDecorations(item: FileEntry | Directory): ClasslistComposite | null {
-        if (!item || (item.type !== FileType.File && item.type !== FileType.Directory)) {
-            return null
-        }
+
         const decMeta = this.getDecorationData(item)
         if (decMeta) {
             return decMeta.applicable.compositeCssClasslist
@@ -159,7 +158,8 @@ export class DecorationsManager implements IDisposable {
         if (parentMeta) {
             const ownMeta: IDecorationMeta = {
                 applicable: new DecorationComposite(item, DecorationCompositeType.Applicable, parentMeta.inheritable),
-                inheritable: item.type === FileType.Directory ? new DecorationComposite(item, DecorationCompositeType.Inheritable, parentMeta.inheritable) : null,
+                // TODO FileType.Directory will delete
+                inheritable: item.type === 2 ? new DecorationComposite(item, DecorationCompositeType.Inheritable, parentMeta.inheritable) : null,
             }
             this.decorationsMeta.set(item, ownMeta)
             return ownMeta

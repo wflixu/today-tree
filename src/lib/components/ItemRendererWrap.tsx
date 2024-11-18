@@ -2,7 +2,8 @@ import { Disposable } from 'notificar'
 import * as React from 'react'
 import { Directory, FileEntry } from '../core'
 import { NewFilePromptHandle, RenamePromptHandle } from '../models/prompt'
-import { IItemRenderer, ItemType } from './types'
+import { IItemRenderer, IItemRendererProps, ItemType } from './types'
+
 
 export interface IItemRendererWrapProps {
 	item: FileEntry | Directory | NewFilePromptHandle | RenamePromptHandle
@@ -19,7 +20,13 @@ export class ItemRendererWrap extends React.Component<IItemRendererWrapProps> {
 	public render() {
 		const { item, itemType, children } = this.props
 		// z
-		return React.createElement(children, {item, itemType})
+		return (
+			<>
+			 {
+				children({item,itemType} as IItemRendererProps)
+			 }
+			</>
+		)
 	}
 
 	public shouldComponentUpdate(nextProps: IItemRendererWrapProps) {
