@@ -1,8 +1,8 @@
 
 import { IDisposable } from 'notificar'
-import { TreeModelX } from './TreeModelX'
-import { Directory, FileEntry, FileType, IFileEntryItem } from '../lib/core'
-import { IFileTreeHandle, IItemRenderer } from '../lib'
+import { TreeModelX } from '../TreeModelX'
+import { Directory, FileEntry, FileType, IFileEntryItem } from '../../lib/core'
+import { IFileTreeHandle, IItemRenderer } from '../../lib'
 
 export interface IItemRendererX extends IItemRenderer {
     getBoundingClientRectForItem(item: FileEntry | Directory): ClientRect

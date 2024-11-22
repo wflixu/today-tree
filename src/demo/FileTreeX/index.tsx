@@ -1,4 +1,5 @@
-import * as React from 'react'
+import  React from 'react'
+
 import {
     Directory,
     FileEntry,
@@ -22,7 +23,7 @@ import {
 import { Decoration, TargetMatchMode } from '../../lib/decorations'
 import { FileTreeItem } from '../FileTreeItem'
 import { Notificar, DisposablesComposite } from 'notificar'
-import { IFileTreeXHandle, IFileTreeXProps, FileTreeXEvent } from '../typings'
+import { IFileTreeXHandle, IFileTreeXProps, FileTreeXEvent } from './typings'
 import { KeyboardHotkeys } from '../services/keyboardHotkeys'
 import { showContextMenu } from '../services/contextMenu'
 import { DragAndDropService } from '../services/dragAndDrop'
@@ -78,20 +79,21 @@ export class FileTreeX extends React.Component<IFileTreeXProps> {
             onClick={this.handleClick}
             ref={this.wrapperRef}
             tabIndex={-1}>
-            <FileTree
+              
+             <FileTree
                 height={height}
                 width={width}
                 model={model}
                 itemHeight={FileTreeItem.renderHeight}
                 onReady={this.handleTreeReady}>
                 {(props: IItemRendererProps) => <FileTreeItem
-                    item={props.item}
+                    item={props.item as any}
                     itemType={props.itemType}
                     decorations={decorations.getDecorations(props.item as any)}
                     dndService={this.dndService}
                     onClick={this.handleItemClicked}
                     onContextMenu={this.handleItemCtxMenu} />}
-            </FileTree>
+            </FileTree> 
         </div>
     }
 

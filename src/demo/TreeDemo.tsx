@@ -1,107 +1,137 @@
-import React, { useEffect, useState } from 'react';
-import ContextMenu from 'context-menu';
-import * as BrowserFS from 'browserfs'
-
-// import {
-//     FileType,
-//     IBasicFileSystemHost,
-//     IFileEntryItem,
-// } from 'react-aspen'
-
-import { initFS } from './fs'
-
-import 'context-menu/lib/styles.css'
+import React, { useEffect, useState, Component } from 'react';
+import ContextMenu from './services/context-menu/ContextMenu';
+import * as BrowserFS from 'browserfs';
+import { initFS } from './fs';
+import './services/context-menu/style.css';
 import { FileType, IBasicFileSystemHost, IFileEntryItem } from '../lib/core/types';
 import { TreeModelX } from './TreeModelX';
 import { FileTreeX } from './FileTreeX';
 
 const Path = BrowserFS.BFSRequire('path');
+const MOUNT_POINT = '/app';
 
-const MOUNT_POINT = '/app'
+interface TreeSystemState {
+    treeModel: TreeModelX | null;
+    loading: boolean;
+    mv: (oldPath: string, newPath: string) => Promise<boolean>;
+    create: (pathToNewObject: string, fileType: FileType) => Promise<IFileEntryItem>;
+}
 
 
 
-const init = async () => {
-    const fs = await initFS(MOUNT_POINT)
-    const host: IBasicFileSystemHost = {
-        pathStyle: 'unix',
-        getItems: async (path) => {
-            return await Promise.all(
-                (await fs.readdir(path))
-                    .map(async (filename) => {
-                        const stat = await fs.stat(Path.join(path, filename))
-                        return {
-                            name: filename,
-                            type: stat.isDirectory() ? FileType.Directory : FileType.File
-                        }
-                    }))
-        },
+
+export class TreeDemo extends Component<any, {isLoading: boolean}> {
+    fs = null;
+    treeModel = null;
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoading: true
+        }
+
     }
-    const treeModelX = new TreeModelX(host, MOUNT_POINT)
 
-    //     // used by `FileTreeX` for drag and drop, and rename prompts
-    const mv = async (oldPath: string, newPath: string): Promise<boolean> => {
+    async initialize() {
         try {
-            await fs.mv(oldPath, newPath)
-            return true
+            this.fs = await initFS(MOUNT_POINT);
+            const fs = this.fs;
+
+            const host: IBasicFileSystemHost = {
+                pathStyle: 'unix',
+                getItems: async (path) => {
+                    return await Promise.all(
+                        (await fs.readdir(path))
+                            .map(async (filename) => {
+                                const stat = await fs.stat(Path.join(path, filename));
+                                return {
+                                    name: filename,
+                                    type: stat.isDirectory() ? FileType.Directory : FileType.File
+                                };
+                            })
+                    );
+                },
+            };
+
+            const model = new TreeModelX(host, MOUNT_POINT);
+            await model.root.ensureLoaded();
+            this.treeModel = model;
+            this.setState({ isLoading: false });
         } catch (error) {
-            return false // or throw error as you see fit
+            console.error('Failed to initialize tree:', error);
+            this.setState({ isLoading: false });
         }
     }
 
-    // used by `FileTreeX` for when user hits `Enter` key in a new file prompt
-    const create = async (pathToNewObject: string, fileType: FileType): Promise<IFileEntryItem> => {
+    componentDidMount(): void {
+        this.initialize().then(() => {
+
+        }).catch(err =>{
+            console.log(err)
+        });
+    }
+
+
+    mv = async (oldPath: string, newPath: string): Promise<boolean> => {
+        if (!this.fs) return false;
+        try {
+            await this.fs.mv(oldPath, newPath);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    };
+
+    create = async (pathToNewObject: string, fileType: FileType): Promise<IFileEntryItem> => {
+        if (!this.fs) return null;
         try {
             if (fileType === FileType.File) {
-                await fs.writeFile(pathToNewObject)
+                await this.fs.writeFile(pathToNewObject);
             } else {
-                await fs.mkdir(pathToNewObject)
+                await this.fs.mkdir(pathToNewObject);
             }
             return {
                 name: pathToNewObject,
                 type: fileType,
-            }
+            };
         } catch (error) {
-            return null // or throw error as you see fit
+            return null;
         }
-    }
+    };
 
-    await treeModelX.root.ensureLoaded()
+    render() {
+        const treeModel = this.treeModel;
+        const mv = this.mv;
+        const create = this.create;
+        const isLoading = this.state.isLoading;
+        return (
+            <div>
+                <h1>Tree Demo</h1>
+                {
+                    isLoading ? (<div>Loading...</div>)
+                        : (
+                            <div>
+                                <ContextMenu theme='light' />
+                                <FileTreeX
+                                    height={700}
+                                    width={350}
+                                    model={treeModel}
+                                    mv={mv}
+                                    create={create}
+                                />
+                            </div>
 
-    return {
-        treeModelX,
-        mv,
-        create
+                        )
+                }
+
+            </div>
+        );
     }
 
 }
 
-export function TreeDemo() {
-    const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        init().then(({ treeModelX,
-            mv,
-            create }) => {
 
-            setLoading(false)
-        }
-        )
-    }, [])
 
-    return (
-        <div>
-            {loading ? <div>Loading...</div> : (
-                <div>
-                    <h1>Tree Demo</h1>
-                    <ContextMenu theme='light' />
-                    <FileTreeX height={700} width={350} model={treeModelX} mv={mv} create={create} />
-                </div>
-            )
 
-            }
-
-        </div>
-    )
-}
 

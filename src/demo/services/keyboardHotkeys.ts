@@ -27,6 +27,8 @@ export class KeyboardHotkeys {
             ev.preventDefault()
             this.hotkeyActions[code]()
             return true
+        } else {
+            return false
         }
     }
 

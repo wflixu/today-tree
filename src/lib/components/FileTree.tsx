@@ -19,7 +19,7 @@ export interface IFileTreeProps {
     onReady?: (handle: IFileTreeHandle) => void
     style?: React.CSSProperties
     className?: string
-    disableCache: boolean
+    disableCache?: boolean
 }
 
 enum FileTreeViewEvent {
@@ -47,7 +47,7 @@ export class FileTree extends React.Component<IFileTreeProps> {
     private disposables: DisposablesComposite = new DisposablesComposite()
     private events: Notificar<FileTreeViewEvent> = new Notificar()
     private listRef = React.createRef<FixedSizeList<never[]>>()
-
+    // youhua yix 
     private batchUpdate = (() => {
         // For every caller who calls `batchUpdate` within `BATCHED_UPDATE_MAX_WAIT_MS`, they are given same `Promise` object they can `await` upon
         let onePromise: Promise<void> | null
@@ -95,8 +95,8 @@ export class FileTree extends React.Component<IFileTreeProps> {
     })()
 
     public render() {
-        const p = this.props
-        const ref = React.useRef<HTMLDivElement>(null);
+        const p = this.props 
+    
         return (
             <FixedSizeList
                 width={p.width}

@@ -1,5 +1,5 @@
-import ContextMenu, { IPosition } from 'context-menu'
-import { IFileTreeXHandle } from '../typings'
+import ContextMenu, { IPosition } from './context-menu/ContextMenu'
+import { IFileTreeXHandle } from '../FileTreeX/typings'
 import { insertIf } from '../../lib/util'
 import { Directory, FileEntry } from '../../lib/core'
 
